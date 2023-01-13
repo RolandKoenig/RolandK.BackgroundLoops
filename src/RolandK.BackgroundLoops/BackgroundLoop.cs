@@ -12,8 +12,6 @@ namespace RolandK.BackgroundLoops;
 
 public class BackgroundLoop
 {
-    private const int STANDARD_HEARTBEAT = 500;
-
     [field: ThreadStatic]
     public static BackgroundLoop? CurrentBackgroundLoop
     {
@@ -46,7 +44,7 @@ public class BackgroundLoop
     /// <summary>
     /// Gets or sets the thread's heartbeat.
     /// </summary>
-    protected int HeartBeat { get; set; }
+    protected TimeSpan HeartBeat { get; set; }
 
     /// <summary>
     /// Called when the thread ist starting.
@@ -71,23 +69,15 @@ public class BackgroundLoop
     /// <summary>
     /// Initializes a new instance of the <see cref="BackgroundLoop"/> class.
     /// </summary>
-    public BackgroundLoop()
-        : this(string.Empty, STANDARD_HEARTBEAT)
-    {
-    }
-
-    /// <summary>
-    /// Initializes a new instance of the <see cref="BackgroundLoop"/> class.
-    /// </summary>
     /// <param name="name">The name of the generated thread.</param>
-    /// <param name="heartBeat">The initial heartbeat of the BackgroundLoop.</param>
-    public BackgroundLoop(string name, int heartBeat)
+    /// <param name="heartBeatMS">The initial heartbeat of the BackgroundLoop in milliseconds.</param>
+    public BackgroundLoop(string name = "", int heartBeatMS = 500)
     {
         _taskQueue = new ConcurrentQueue<Action>();
         _mainLoopSynchronizeObject = new SemaphoreSlim(1);
 
         this.Name = name;
-        this.HeartBeat = heartBeat;
+        this.HeartBeat = TimeSpan.FromMilliseconds(heartBeatMS);
 
         _syncContext = new BackgroundLoopSynchronizationContext(this);
 
