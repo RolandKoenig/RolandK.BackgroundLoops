@@ -227,6 +227,21 @@ public class BackgroundLoop
     }
 
     /// <summary>
+    /// Invokes the given delegate within the thread of this object.
+    /// This method works in a fire-and-forget way. We don't wait for the action to finish.
+    /// </summary>
+    /// <param name="actionToInvoke">The delegate to invoke.</param>
+    public void BeginInvoke(Action actionToInvoke)
+    {
+        actionToInvoke.EnsureNotNull(nameof(actionToInvoke));
+
+        _taskQueue.Enqueue(actionToInvoke);
+        
+        // Triggers the main loop
+        this.Trigger();
+    }
+
+    /// <summary>
     /// Thread is starting.
     /// </summary>
     protected virtual void OnStarting(EventArgs eArgs)
