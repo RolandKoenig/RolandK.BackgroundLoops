@@ -33,6 +33,36 @@ public class BackgroundLoopTests
     }
 
     [Fact]
+    public async Task StartAndStop_StateIsSetCorrectly()
+    {
+        // Arrange
+        var firstTickTaskSource = new TaskCompletionSource<object?>();
+
+        var stateOnStarting = BackgroundLoopState.None;
+        var stateOnTick = BackgroundLoopState.None;
+        var stateOnStopping = BackgroundLoopState.None;
+
+        var backgroundLoop = new BackgroundLoop();
+        backgroundLoop.Starting += (_, _) => { stateOnStarting = backgroundLoop.CurrentState; };
+        backgroundLoop.Tick += (_, _) =>
+        {
+            stateOnTick = backgroundLoop.CurrentState;
+            firstTickTaskSource.TrySetResult(null);
+        };
+        backgroundLoop.Stopping += (_, _) => { stateOnStopping = backgroundLoop.CurrentState; };
+
+        // Act
+        await backgroundLoop.StartAsync();
+        await firstTickTaskSource.Task;
+        await backgroundLoop.StopAsync(5000);
+
+        // Assert
+        Assert.Equal(BackgroundLoopState.Starting, stateOnStarting);
+        Assert.Equal(BackgroundLoopState.Running, stateOnTick);
+        Assert.Equal(BackgroundLoopState.Stopping, stateOnStopping);
+    }
+    
+    [Fact]
     public async Task TicksMoreTimes()
     {
         // Arrange

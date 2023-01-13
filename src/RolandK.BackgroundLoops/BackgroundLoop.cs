@@ -21,6 +21,7 @@ public class BackgroundLoop
 
     // Members for thread runtime
     private volatile BackgroundLoopState _currentState;
+    private volatile BackgroundLoopState _targetState;
     private Thread? _mainThread;
     private CultureInfo _culture;
     private CultureInfo _uiCulture;
@@ -35,6 +36,15 @@ public class BackgroundLoop
     /// Gets the current SynchronizationContext object.
     /// </summary>
     public SynchronizationContext SyncContext => _syncContext;
+
+    /// <summary>
+    /// Gets the current state of the background loop.
+    /// </summary>
+    public BackgroundLoopState CurrentState => _currentState;
+
+    public bool IsStartingOrRunning =>
+        (_currentState == BackgroundLoopState.Starting) ||
+        (_currentState == BackgroundLoopState.Running);
 
     /// <summary>
     /// Gets the name of this thread.
@@ -106,6 +116,7 @@ public class BackgroundLoop
 
         // Go into starting state
         _currentState = BackgroundLoopState.Starting;
+        _targetState = BackgroundLoopState.Running;
 
         _mainThread = new Thread(this.BackgroundLoopMainMethod)
         {
@@ -157,12 +168,7 @@ public class BackgroundLoop
     public void Stop()
     {
         if (_currentState != BackgroundLoopState.Running) { throw new InvalidOperationException($"Unable to stop thread: Illegal state: {_currentState}!"); }
-        _currentState = BackgroundLoopState.Stopping;
-
-        while (_taskQueue.TryDequeue(out _))
-        {
-
-        }
+        _targetState = BackgroundLoopState.Stopping;
 
         //Trigger next update
         this.Trigger();
@@ -302,22 +308,26 @@ public class BackgroundLoop
             {
                 this.OnThreadException(new BackgroundLoopExceptionEventArgs(_currentState, ex));
                 _currentState = BackgroundLoopState.None;
+                _targetState = BackgroundLoopState.None;
                 CurrentBackgroundLoop = null;
                 return;
             }
 
-            //Run main-thread
+            // Run main-thread
             if (_currentState != BackgroundLoopState.None)
             {
-                _currentState = BackgroundLoopState.Running;
+                _currentState = _targetState;
                 while (_currentState == BackgroundLoopState.Running)
                 {
                     try
                     {
-                        //Wait for next action to perform
+                        // Wait for next action to perform
                         _mainLoopSynchronizeObject.Wait(this.HeartBeat);
+                        
+                        _currentState = _targetState;
+                        if (_currentState != BackgroundLoopState.Running) { break; }
 
-                        //Measure current time
+                        // Measure current time
                         stopWatch.Stop();
                         var elapsedTicks = stopWatch.Elapsed.Ticks;
                         stopWatch.Reset();
@@ -350,6 +360,8 @@ public class BackgroundLoop
                     {
                         this.OnThreadException(new BackgroundLoopExceptionEventArgs(_currentState, ex));
                     }
+
+                    _currentState = _targetState;
                 }
 
                 // Notify stop process
@@ -366,6 +378,7 @@ public class BackgroundLoop
 
             // Reset state to none
             _currentState = BackgroundLoopState.None;
+            _targetState = BackgroundLoopState.None;
 
             stopWatch.Stop();
             stopWatch = null;
@@ -374,6 +387,7 @@ public class BackgroundLoop
         {
             this.OnThreadException(new BackgroundLoopExceptionEventArgs(_currentState, ex));
             _currentState = BackgroundLoopState.None;
+            _targetState = BackgroundLoopState.None;
         }
 
         // Notify thread stop event
