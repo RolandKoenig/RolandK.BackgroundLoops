@@ -60,6 +60,27 @@ public class BackgroundLoopTests
     }
 
     [Fact]
+    public async Task IsSynchronizationContextSet_OnStart()
+    {
+        // Arrange
+        var isSyncContextSet = false;
+
+        var backgroundLoop = new BackgroundLoop();
+        backgroundLoop.Starting += (_, _) =>
+        {
+            isSyncContextSet =
+                SynchronizationContext.Current is BackgroundLoopSynchronizationContext;
+        };
+
+        // Act
+        await backgroundLoop.StartAsync();
+        await backgroundLoop.StopAsync(5000);
+
+        // Assert
+        Assert.True(isSyncContextSet, nameof(isSyncContextSet));
+    }
+    
+    [Fact]
     public async Task IsSynchronizationContextSet_OnTick()
     {
         // Arrange
@@ -67,7 +88,7 @@ public class BackgroundLoopTests
 
         var isSyncContextSet = false;
 
-        var backgroundLoop = new BackgroundLoop(string.Empty, 500);
+        var backgroundLoop = new BackgroundLoop();
         backgroundLoop.Tick += (_, _) =>
         {
             isSyncContextSet =
@@ -85,12 +106,33 @@ public class BackgroundLoopTests
     }
     
     [Fact]
+    public async Task IsSynchronizationContextSet_OnStop()
+    {
+        // Arrange
+        var isSyncContextSet = false;
+
+        var backgroundLoop = new BackgroundLoop();
+        backgroundLoop.Stopping += (_, _) =>
+        {
+            isSyncContextSet =
+                SynchronizationContext.Current is BackgroundLoopSynchronizationContext;
+        };
+
+        // Act
+        await backgroundLoop.StartAsync();
+        await backgroundLoop.StopAsync(5000);
+
+        // Assert
+        Assert.True(isSyncContextSet, nameof(isSyncContextSet));
+    }
+    
+    [Fact]
     public async Task IsSynchronizationContextSet_OnInvokeAsync()
     {
         // Arrange
         var isSyncContextSet = false;
 
-        var backgroundLoop = new BackgroundLoop(string.Empty, 500);
+        var backgroundLoop = new BackgroundLoop();
         var invokeTask = backgroundLoop.InvokeAsync(() =>
         {
             isSyncContextSet =
@@ -114,7 +156,7 @@ public class BackgroundLoopTests
 
         var isSyncContextSet = false;
 
-        var backgroundLoop = new BackgroundLoop(string.Empty, 500);
+        var backgroundLoop = new BackgroundLoop();
         backgroundLoop.BeginInvoke(() =>
         {
             isSyncContextSet =
@@ -163,7 +205,7 @@ public class BackgroundLoopTests
 
         var firstTickPassed = false;
 
-        var backgroundLoop = new BackgroundLoop(string.Empty, 500);
+        var backgroundLoop = new BackgroundLoop();
         backgroundLoop.Tick += (_, _) =>
         {
             if (!firstTickPassed)
@@ -190,7 +232,7 @@ public class BackgroundLoopTests
     public async Task InvokeMethod_BeforeStart()
     {
         // Arrange
-        var backgroundLoop = new BackgroundLoop(string.Empty, 500);
+        var backgroundLoop = new BackgroundLoop();
 
         // Act
         var methodInvoked = false;
