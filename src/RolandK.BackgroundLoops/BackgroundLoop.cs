@@ -82,12 +82,23 @@ public class BackgroundLoop
     /// <param name="name">The name of the generated thread.</param>
     /// <param name="heartBeatMS">The initial heartbeat of the BackgroundLoop in milliseconds.</param>
     public BackgroundLoop(string name = "", int heartBeatMS = 500)
+        : this(name, TimeSpan.FromMilliseconds(heartBeatMS))
+    {
+
+    }
+    
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BackgroundLoop"/> class.
+    /// </summary>
+    /// <param name="name">The name of the generated thread.</param>
+    /// <param name="heartBeat">The initial heartbeat of the BackgroundLoop.</param>
+    public BackgroundLoop(string name, TimeSpan heartBeat)
     {
         _taskQueue = new ConcurrentQueue<Action>();
         _mainLoopSynchronizeObject = new SemaphoreSlim(1);
 
         this.Name = name;
-        this.HeartBeat = TimeSpan.FromMilliseconds(heartBeatMS);
+        this.HeartBeat = heartBeat;
 
         _syncContext = new BackgroundLoopSynchronizationContext(this);
 
