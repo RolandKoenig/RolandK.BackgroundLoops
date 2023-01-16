@@ -14,7 +14,7 @@ A .NET Standard library which provides a base class for background loops. Those 
 | RolandK.BackgroundLoops |      |
 
 ## Samples
-The following snipped creates a BackgroundLoop named TestThread and
+The following code snippet creates a BackgroundLoop named TestThread and
 a heartbeat time of 500 milliseconds. Tick is call at least
 each time the heartbeat time passes after processing the previous tick.
 
