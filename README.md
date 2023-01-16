@@ -9,9 +9,9 @@ A .NET Standard library which provides a base class for background loops. Those 
 [![Continuous integration](https://github.com/RolandKoenig/RolandK.BackgroundLoops/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/RolandKoenig/RolandK.BackgroundLoops/actions/workflows/continuous-integration.yml)
 
 ## Nuget
-| Package                 | Link |
-|-------------------------|------|
-| RolandK.BackgroundLoops |      |
+| Package                 | Link                                                   |
+|-------------------------|--------------------------------------------------------|
+| RolandK.BackgroundLoops | https://www.nuget.org/packages/RolandK.BackgroundLoops |
 
 ## Samples
 The following code snippet creates a BackgroundLoop named TestThread and
