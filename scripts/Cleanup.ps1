@@ -1,5 +1,5 @@
 # Cleanup solution
-dotnet clean "../src/RolandK.BackgroundLoops.sln"
+dotnet clean "../RolandK.BackgroundLoops.sln"
 
 # Delete all bin and obj directories
 $directories = Get-ChildItem "../src/" -include bin,obj -Recurse

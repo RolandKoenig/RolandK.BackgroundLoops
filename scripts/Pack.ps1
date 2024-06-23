@@ -6,4 +6,4 @@ if (Test-Path "../publish")
 }
 
 # Build nuget packages
-dotnet pack -c Release -o ../publish "../src/RolandK.BackgroundLoops.sln"  /p:ContinuousIntegrationBuild=true /p:IncludeSymbols=true /p:EmbedUntrackedSources=true -p:SymbolPackageFormat=snupkg
+dotnet pack -c Release -o ../publish "../RolandK.BackgroundLoops.sln"  /p:ContinuousIntegrationBuild=true /p:IncludeSymbols=true /p:EmbedUntrackedSources=true -p:SymbolPackageFormat=snupkg

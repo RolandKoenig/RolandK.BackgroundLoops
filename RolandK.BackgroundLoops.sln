@@ -1,8 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RolandK.BackgroundLoops", "RolandK.BackgroundLoops\RolandK.BackgroundLoops.csproj", "{15905348-38FC-48BB-8E77-961456110C0E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RolandK.BackgroundLoops", "src\RolandK.BackgroundLoops\RolandK.BackgroundLoops.csproj", "{15905348-38FC-48BB-8E77-961456110C0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RolandK.BackgroundLoops.Tests", "RolandK.BackgroundLoops.Tests\RolandK.BackgroundLoops.Tests.csproj", "{1EB69A6E-BF98-4C04-BD8B-4BE1732A988E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RolandK.BackgroundLoops.Tests", "src\RolandK.BackgroundLoops.Tests\RolandK.BackgroundLoops.Tests.csproj", "{1EB69A6E-BF98-4C04-BD8B-4BE1732A988E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

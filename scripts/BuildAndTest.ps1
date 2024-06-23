@@ -1,2 +1,2 @@
-dotnet build -c Release "../src/RolandK.BackgroundLoops.sln"
-dotnet test -c Release "../src/RolandK.BackgroundLoops.sln"
+dotnet build -c Release "../RolandK.BackgroundLoops.sln"
+dotnet test -c Release "../RolandK.BackgroundLoops.sln"
