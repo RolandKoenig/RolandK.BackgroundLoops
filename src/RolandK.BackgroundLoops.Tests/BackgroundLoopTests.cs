@@ -24,7 +24,9 @@ public class BackgroundLoopTests
         // Act
         await backgroundLoop.StartAsync();
         await firstTickTaskSource.Task;
-        await backgroundLoop.StopAsync(5000);
+
+        var cancelTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        await backgroundLoop.StopAsync(cancelTokenSource.Token);
 
         // Assert
         Assert.True(startingCalled, nameof(startingCalled));
@@ -54,7 +56,9 @@ public class BackgroundLoopTests
         // Act
         await backgroundLoop.StartAsync();
         await firstTickTaskSource.Task;
-        await backgroundLoop.StopAsync(5000);
+        
+        var cancelTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        await backgroundLoop.StopAsync(cancelTokenSource.Token);
 
         // Assert
         Assert.Equal(BackgroundLoopState.Starting, stateOnStarting);
@@ -83,7 +87,9 @@ public class BackgroundLoopTests
         // Act
         await backgroundLoop.StartAsync();
         await firstTickTaskSource.Task;
-        await backgroundLoop.StopAsync(5000);
+        
+        var cancelTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        await backgroundLoop.StopAsync(cancelTokenSource.Token);
 
         // Assert
         Assert.True(tickCount >= 5, nameof(tickCount));
@@ -104,7 +110,9 @@ public class BackgroundLoopTests
 
         // Act
         await backgroundLoop.StartAsync();
-        await backgroundLoop.StopAsync(5000);
+        
+        var cancelTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        await backgroundLoop.StopAsync(cancelTokenSource.Token);
 
         // Assert
         Assert.True(isSyncContextSet, nameof(isSyncContextSet));
@@ -129,7 +137,9 @@ public class BackgroundLoopTests
         // Act
         await backgroundLoop.StartAsync();
         await firstTickTaskSource.Task;
-        await backgroundLoop.StopAsync(5000);
+        
+        var cancelTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        await backgroundLoop.StopAsync(cancelTokenSource.Token);
 
         // Assert
         Assert.True(isSyncContextSet, nameof(isSyncContextSet));
@@ -150,7 +160,9 @@ public class BackgroundLoopTests
 
         // Act
         await backgroundLoop.StartAsync();
-        await backgroundLoop.StopAsync(5000);
+        
+        var cancelTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        await backgroundLoop.StopAsync(cancelTokenSource.Token);
 
         // Assert
         Assert.True(isSyncContextSet, nameof(isSyncContextSet));
@@ -172,7 +184,9 @@ public class BackgroundLoopTests
         // Act
         await backgroundLoop.StartAsync();
         await invokeTask;
-        await backgroundLoop.StopAsync(5000);
+        
+        var cancelTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        await backgroundLoop.StopAsync(cancelTokenSource.Token);
 
         // Assert
         Assert.True(isSyncContextSet, nameof(isSyncContextSet));
@@ -197,7 +211,9 @@ public class BackgroundLoopTests
         // Act
         await backgroundLoop.StartAsync();
         await firstTickTaskSource.Task;
-        await backgroundLoop.StopAsync(5000);
+        
+        var cancelTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        await backgroundLoop.StopAsync(cancelTokenSource.Token);
 
         // Assert
         Assert.True(isSyncContextSet, nameof(isSyncContextSet));
@@ -221,7 +237,9 @@ public class BackgroundLoopTests
         // Acct
         await backgroundLoop.StartAsync();
         await firstTickTaskSource.Task;
-        await backgroundLoop.StopAsync(5000);
+        
+        var cancelTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        await backgroundLoop.StopAsync(cancelTokenSource.Token);
 
         // Assert
         Assert.True(isThreadNameSet, nameof(isThreadNameSet));
@@ -252,7 +270,8 @@ public class BackgroundLoopTests
         var methodInvoked = false;
         await backgroundLoop.InvokeAsync(() => methodInvoked = true);
 
-        await backgroundLoop.StopAsync(5000);
+        var cancelTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        await backgroundLoop.StopAsync(cancelTokenSource.Token);
 
         // Assert
         Assert.True(methodInvoked, nameof(methodInvoked));
@@ -269,7 +288,9 @@ public class BackgroundLoopTests
         var invokeTask = backgroundLoop.InvokeAsync(() => methodInvoked = true);
         await backgroundLoop.StartAsync();
         await invokeTask;
-        await backgroundLoop.StopAsync(5000);
+        
+        var cancelTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(5));
+        await backgroundLoop.StopAsync(cancelTokenSource.Token);
 
         // Assert
         Assert.True(methodInvoked, nameof(methodInvoked));

@@ -2,8 +2,8 @@
 
     <!-- Version -->
     <PropertyGroup>
-        <Version>1.0.1-preview1</Version>
-        <PackageVersion>1.0.0-preview1</PackageVersion>
+        <Version>1.0.1</Version>
+        <PackageVersion>1.0.1</PackageVersion>
     </PropertyGroup>
 
     <!-- Nuget -->
@@ -11,7 +11,7 @@
         <Authors>Roland König</Authors>
         <Company>Roland König</Company>
         <Description>A .NET Standard library which provides a base class for background loops. Those loops work on a dedicated thread and provide a SynchronizationContext</Description>
-        <Copyright>©2023 by Roland König</Copyright>
+        <Copyright>©2024 by Roland König</Copyright>
         <PackageProjectUrl>https://github.com/RolandKoenig/RolandK.BackgroundLoops</PackageProjectUrl>
         <RepositoryUrl>https://github.com/RolandKoenig/RolandK.BackgroundLoops</RepositoryUrl>
         <RepositoryType>Git</RepositoryType>

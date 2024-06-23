@@ -141,7 +141,7 @@ public class BackgroundLoop
     /// <summary>
     /// Waits until this BackgroundLoop has stopped.
     /// </summary>
-    public Task WaitUntilSoppedAsync()
+    public Task WaitUntilStoppedAsync()
     {
         switch (_currentState)
         {
@@ -181,20 +181,20 @@ public class BackgroundLoop
         if (_currentState != BackgroundLoopState.Running) { throw new InvalidOperationException($"Unable to stop thread: Illegal state: {_currentState}!"); }
         _targetState = BackgroundLoopState.Stopping;
 
-        //Trigger next update
+        // Trigger next update
         this.Trigger();
     }
 
     /// <summary>
     /// Stops the asynchronous.
     /// </summary>
-    public async Task StopAsync(int timeout)
+    public async Task StopAsync(CancellationToken cancellationToken)
     {
         this.Stop();
 
         if (_threadStopSynchronizeObject != null)
         {
-            await _threadStopSynchronizeObject.WaitAsync(timeout);
+            await _threadStopSynchronizeObject.WaitAsync(cancellationToken);
 
             _threadStopSynchronizeObject.Dispose();
             _threadStopSynchronizeObject = null;
